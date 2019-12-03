@@ -23,19 +23,19 @@ const articleSchema = mongoose.Schema({
     default: Date.now
   },
   comments: [{
-      comments_subject:{
+      comment_subject:{
           type: String
       },
-      comments_body:{
+      comment_body:{
         type: String
     },
-    comments_author:{
+    comment_author:{
         type: String
     },
-    comments_email:{
+    comment_email:{
         type: String
     },
-    comments_date:{
+    comment_date:{
         type: String
     },
   }]
@@ -48,6 +48,12 @@ module.exports.getArticles = function(callback, limit){
   Article.find(callback).limit(limit).sort([['title', 'ascending']]);
 }
 
+//Get article by category
+module.exports.getCategoryArticles = function(categoryId, callback){
+let query = {category: categoryId}
+  Article.find(query, callback).sort([['title', 'ascending']]);
+}
+
 // Add Article
 module.exports.addArticle = function(article, callback){
   Article.create(article, callback);
@@ -57,6 +63,7 @@ module.exports.addArticle = function(article, callback){
 module.exports.getArticleById = function(id, callback){
   Article.findById(id, callback);
 }
+
 //update Article
 module.exports.updateArticle = function(query, update, options, callback){
 Article.findOneAndUpdate(query, update, options, callback);
@@ -65,4 +72,16 @@ Article.findOneAndUpdate(query, update, options, callback);
 //Remove Article
 module.exports.removeArticle = function(query, callback){
   Article.remove(query, callback);
+}
+
+//Add comments
+module.exports.addComment = function(query, comment, callback){
+Article.update(query,
+  {
+    $push:{
+      comments: comment
+    }
+  },
+  callback
+  );
 }
