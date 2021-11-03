@@ -19,6 +19,6 @@
     "moment": "*",
     "mongoose": "*",
     "pug": "*",
-    "validator": "^5.7.0"
+    "validator": "^13.7.0"
   }
 }
